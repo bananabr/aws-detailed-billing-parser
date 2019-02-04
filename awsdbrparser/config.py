@@ -37,41 +37,49 @@ PROCESS_OPTIONS = (
 
 BULK_SIZE = 1000
 ES_TIMEOUT = 30
-
 ES_DOCTYPE = {
     "properties": {
-        "LinkedAccountId": {"type": "string"},
-        "InvoiceID": {"type": "string", "index": "not_analyzed"},
-        "RecordType": {"type": "string"},
-        "RecordId": {"type": "string", "index": "not_analyzed"},
-        "UsageType": {"type": "string", "index": "not_analyzed"},
-        "UsageEndDate": {"type": "date", "format": "YYYY-MM-dd HH:mm:ss"},
-        "ItemDescription": {"type": "string", "index": "not_analyzed"},
-        "ProductName": {"type": "string", "index": "not_analyzed"},
-        "RateId": {"type": "string"},
-        "Rate": {"type": "float"},
-        "AvailabilityZone": {"type": "string", "index": "not_analyzed"},
-        "PricingPlanId": {"type": "string", "index": "not_analyzed"},
-        "ResourceId": {"type": "string", "index": "not_analyzed"},
-        "Cost": {"type": "float"},
-        "PayerAccountId": {"type": "string", "index": "not_analyzed"},
-        "SubscriptionId": {"type": "string", "index": "not_analyzed"},
-        "UsageQuantity": {"type": "float"},
-        "Operation": {"type": "string"},
-        "ReservedInstance": {"type": "string", "index": "not_analyzed"},
-        "UsageStartDate": {"type": "date", "format": "YYYY-MM-dd HH:mm:ss"},
-        "BlendedCost": {"type": "float"},
-        "BlendedRate": {"type": "float"},
-        "UnBlendedCost": {"type": "float"},
-        "UnBlendedRate": {"type": "float"}
+       "lineItem/BlendedCost": {"type": "float"},
+       "lineItem/BlendedRate": {"type": "float"},
+       "lineItem/UnblendedCost": {"type": "float"},
+       "lineItem/UnblendedRate": {"type": "float"},
+       "lineItem/UsageAmount": {"type": "float"},
+       "pricing/publicOnDemandCost": {"type": "float"},
+       "pricing/publicOnDemandRate": {"type": "float"}
     }, "dynamic_templates": [
         {
-            "notanalyzed": {
+            "dates": {
+                "match": "*",
+                "match_mapping_type": "date",
+                "mapping": {
+                    "type": "date"
+                }
+            }
+    },
+        {
+            "integers": {
+                "match": "*",
+                "match_mapping_type": "long",
+                "mapping": {
+                    "type": "integer"
+                }
+            }
+    },
+        {
+            "doubles": {
+                "match": "*",
+                "match_mapping_type": "double",
+                "mapping": {
+                    "type": "float"
+                }
+            }
+    },
+    {
+            "strings": {
                 "match": "*",
                 "match_mapping_type": "string",
                 "mapping": {
-                    "type": "string",
-                    "index": "not_analyzed"
+                    "type": "keyword"
                 }
             }
         }
